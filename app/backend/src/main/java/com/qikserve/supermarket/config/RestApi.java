@@ -8,6 +8,7 @@ import io.vavr.control.Try;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,11 @@ public class RestApi {
     private static Logger logger = LoggerFactory.getLogger(RestApi.class);
     private RetryRegistry retryRegistry;
 
+    @Value("integration.rest.retry.maxAttempts")
+    private Integer maxAttempts;
+    @Value("integration.rest.retry.waitDurationMilis")
+    private Integer millis;
+
     private Retry retry = retryRegistry.retry("myRetryPolice", retryPolice());
 
     public RestApi(RetryRegistry retryRegistry) {
@@ -31,8 +37,8 @@ public class RestApi {
 
     private RetryConfig retryPolice() {
         return RetryConfig.<Response>custom()
-                .maxAttempts(3)
-                .waitDuration(Duration.ofMillis(100))
+                .maxAttempts(maxAttempts)
+                .waitDuration(Duration.ofMillis(millis))
                 .retryExceptions(NullPointerException.class, TimeoutException.class, IOException.class)
             .retryOnResult(this::checkResult)
             .build();

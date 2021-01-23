@@ -12,5 +12,8 @@ management:
           retry.calls: true
 
 integration:
+  rest.retry:
+    maxAttempts: 3
+    waitDurationMilis: 100
   wiremock:
     baseUrl: app-wiremock
