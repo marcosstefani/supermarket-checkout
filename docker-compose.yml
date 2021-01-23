@@ -1,0 +1,19 @@
+version: "3.8"
+
+networks:
+  app-wiremock_net:
+    name: wiremock_net
+    driver: bridge
+
+volumes:
+  wiremock-data:
+
+services:
+  app-wiremock:
+    container_name: app-wiremock
+    build:
+      context: "./wiremock"
+    ports:
+      - 8081:8081
+    networks:
+      - app-wiremock_net
