@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class WiremockAdapter implements ProductAdapter {
-    private WiremockApi api;
-    private List<WiremockPromotionStrategy> calculations;
+    private final WiremockApi api;
+    private final List<WiremockPromotionStrategy> calculations;
 
     @Override
     public List<ProductDto> getAll() {
