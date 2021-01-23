@@ -15,17 +15,9 @@ public class WiremockPromotionFlatPercentCalculation implements WiremockPromotio
     }
 
     @Override
-    public ProductDto execute(WiremockProduct product, WiremockPromotion promotion, Integer quantity) {
+    public BigDecimal execute(WiremockProduct product, WiremockPromotion promotion, Integer quantity) {
         BigDecimal price = product.getDecimalPrice().multiply(BigDecimal.valueOf(quantity)).setScale(2, RoundingMode.HALF_EVEN);
-        BigDecimal discount = price.multiply(BigDecimal.valueOf(promotion.getAmount())).divide(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_EVEN);
 
-        return new ProductDto(
-                product.getId(),
-                product.getName(),
-                quantity,
-                price,
-                discount,
-                price.subtract(discount)
-        );
+        return price.multiply(BigDecimal.valueOf(promotion.getAmount())).divide(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_EVEN);
     }
 }

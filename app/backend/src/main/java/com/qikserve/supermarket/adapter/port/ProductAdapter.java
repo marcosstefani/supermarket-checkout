@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ProductAdapter {
     List<ProductDto> getAll();
-    ProductDto getOne(String id);
+    ProductDto getOne(String id, Integer quantity);
 }

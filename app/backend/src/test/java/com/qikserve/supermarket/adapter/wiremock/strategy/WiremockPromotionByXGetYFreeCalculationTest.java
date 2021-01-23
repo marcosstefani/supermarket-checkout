@@ -3,7 +3,6 @@ package com.qikserve.supermarket.adapter.wiremock.strategy;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockProduct;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotion;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotionType;
-import com.qikserve.supermarket.domain.dto.ProductDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
@@ -40,10 +39,8 @@ class WiremockPromotionByXGetYFreeCalculationTest {
 
     @Test
     void ShouldReturnTheDiscountAmountAccordingToTheCalculation() {
-        ProductDto dto = calculation.execute(productMock, promotionMock, 5);
-        assertEquals(dto.getTotal(), BigDecimal.valueOf(29.97));
-        assertEquals(dto.getDiscount(), BigDecimal.valueOf(19.98));
-        assertEquals(dto.getPrice(), BigDecimal.valueOf(49.95));
+        BigDecimal discount = calculation.execute(productMock, promotionMock, 5);
+        assertEquals(discount, BigDecimal.valueOf(19.98));
     }
 
     @Test

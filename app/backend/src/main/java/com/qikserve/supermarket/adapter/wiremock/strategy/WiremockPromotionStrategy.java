@@ -5,7 +5,9 @@ import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotion;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotionType;
 import com.qikserve.supermarket.domain.dto.ProductDto;
 
+import java.math.BigDecimal;
+
 public interface WiremockPromotionStrategy {
     boolean canHandle(WiremockPromotionType type);
-    ProductDto execute(WiremockProduct product, WiremockPromotion promotion, Integer quantity);
+    BigDecimal execute(WiremockProduct product, WiremockPromotion promotion, Integer quantity);
 }

@@ -15,7 +15,7 @@ public class WiremockPromotionQuantityBasedPriceOverrideCalculation implements W
     }
 
     @Override
-    public ProductDto execute(WiremockProduct product, WiremockPromotion promotion, Integer quantity) {
+    public BigDecimal execute(WiremockProduct product, WiremockPromotion promotion, Integer quantity) {
         Integer reminder = quantity % promotion.getRequiredQty();
         Integer quotient = quantity / promotion.getRequiredQty();
         BigDecimal promotionValue = BigDecimal.valueOf(quotient).multiply(promotion.getDecimalPrice()).setScale(2, RoundingMode.HALF_EVEN);
@@ -23,13 +23,6 @@ public class WiremockPromotionQuantityBasedPriceOverrideCalculation implements W
         BigDecimal price = product.getDecimalPrice().multiply(BigDecimal.valueOf(quantity)).setScale(2, RoundingMode.HALF_EVEN);
         BigDecimal total = promotionValue.add(normalValue).setScale(2, RoundingMode.HALF_EVEN);
 
-        return new ProductDto(
-                product.getId(),
-                product.getName(),
-                quantity,
-                price,
-                price.subtract(total),
-                total
-        );
+        return price.subtract(total);
     }
 }

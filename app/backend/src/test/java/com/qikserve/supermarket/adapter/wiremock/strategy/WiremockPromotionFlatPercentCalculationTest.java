@@ -3,7 +3,6 @@ package com.qikserve.supermarket.adapter.wiremock.strategy;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockProduct;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotion;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotionType;
-import com.qikserve.supermarket.domain.dto.ProductDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
@@ -14,7 +13,9 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(MockitoExtension.class)
 class WiremockPromotionFlatPercentCalculationTest {
     @Spy
@@ -38,10 +39,8 @@ class WiremockPromotionFlatPercentCalculationTest {
 
     @Test
     void ShouldReturnTheDiscountAmountAccordingToTheCalculation() {
-        ProductDto dto = calculation.execute(productMock, promotionMock, 5);
-        assertEquals(dto.getTotal(), BigDecimal.valueOf(22.45));
-        assertEquals(dto.getDiscount(), BigDecimal.valueOf(2.50).setScale(2, RoundingMode.HALF_EVEN));
-        assertEquals(dto.getPrice(), BigDecimal.valueOf(24.95));
+        BigDecimal discount = calculation.execute(productMock, promotionMock, 5);
+        assertEquals(discount, BigDecimal.valueOf(2.50).setScale(2, RoundingMode.HALF_EVEN));
     }
 
     @Test
