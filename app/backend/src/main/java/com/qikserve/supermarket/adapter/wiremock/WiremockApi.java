@@ -13,8 +13,11 @@ import java.util.List;
 
 @Service
 public class WiremockApi {
-    @Value("integration.wiremock.baseUrl")
+    @Value("${integration.wiremock.baseUrl}")
     private String baseUrl;
+
+    @Value("${integration.wiremock.port}")
+    private String port;
 
     private final RestTemplate restTemplate;
     private final RestApi restApi;
@@ -35,6 +38,6 @@ public class WiremockApi {
     }
 
     private String productUri() {
-        return "http://".concat(baseUrl).concat("/products");
+        return "http://".concat(baseUrl).concat(":").concat(port).concat("/products");
     }
 }

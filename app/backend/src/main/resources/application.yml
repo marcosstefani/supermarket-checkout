@@ -17,4 +17,5 @@ integration:
       username: admin
       password: admin
   wiremock:
-    baseUrl: app-wiremock
+    baseUrl: localhost
+    port: 8081
