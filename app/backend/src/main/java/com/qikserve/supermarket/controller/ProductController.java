@@ -16,7 +16,7 @@ public class ProductController {
     @Autowired
     private WiremockApi wiremockApi;
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "wiremock", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<WiremockProduct> wiremockProducts() {
         return wiremockApi.getAll();
     }
