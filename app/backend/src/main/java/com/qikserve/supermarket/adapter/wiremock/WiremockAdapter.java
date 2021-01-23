@@ -7,7 +7,6 @@ import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotionType;
 import com.qikserve.supermarket.adapter.wiremock.strategy.WiremockPromotionStrategy;
 import com.qikserve.supermarket.domain.dto.ProductDto;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class WiremockAdapter implements ProductAdapter {
