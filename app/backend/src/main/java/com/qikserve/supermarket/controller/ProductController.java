@@ -22,9 +22,4 @@ public class ProductController {
     public List<ProductDto> products() {
         return productService.getAll();
     }
-
-//    @GetMapping(value = "wiremock", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public WiremockProduct wiremockProduct(@RequestParam("id") String id) {
-//        return wiremockApi.getOne(id);
-//    }
 }
