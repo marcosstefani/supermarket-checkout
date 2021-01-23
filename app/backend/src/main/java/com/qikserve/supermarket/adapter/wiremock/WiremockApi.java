@@ -3,7 +3,7 @@ package com.qikserve.supermarket.adapter.wiremock;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockProduct;
-import com.qikserve.supermarket.config.RestApi;
+import com.qikserve.supermarket.adapter.RestApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

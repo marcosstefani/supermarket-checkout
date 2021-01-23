@@ -12,6 +12,10 @@ management:
           retry.calls: true
 
 integration:
+  security:
+    basicAuth:
+      username: admin
+      password: admin
   rest.retry:
     maxAttempts: 3
     waitDurationMilis: 100

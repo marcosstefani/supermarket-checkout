@@ -1,4 +1,4 @@
-package com.qikserve.supermarket.config;
+package com.qikserve.supermarket.adapter;
 
 import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryConfig;
