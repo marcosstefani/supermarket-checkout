@@ -10,10 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 public class Security extends WebSecurityConfigurerAdapter {
 
-    @Value("integration.security.basicAuth.username")
+    @Value("${integration.security.basicAuth.username}")
     private String username;
 
-    @Value("integration.security.basicAuth.password")
+    @Value("${integration.security.basicAuth.password}")
     private String password;
 
     @Override
@@ -29,8 +29,8 @@ public class Security extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password("{noop}admin")
+                .withUser(username)
+                .password("{noop}".concat(password))
                 .roles("USER");
     }
 }
