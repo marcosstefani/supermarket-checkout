@@ -17,12 +17,16 @@ public class WiremockPromotionByXGetYFreeCalculation implements WiremockPromotio
     public ProductDto execute(WiremockProduct product, WiremockPromotion promotion, Integer quantity) {
         Integer reminder = quantity % promotion.getRequired_qty();
         Integer quotient = quantity / promotion.getRequired_qty();
+        BigDecimal price = product.getDecimalPrice().multiply(BigDecimal.valueOf(quantity));
+        BigDecimal total = product.getDecimalPrice().multiply(BigDecimal.valueOf(reminder + quotient));
+
         return new ProductDto(
                 product.getId(),
                 product.getName(),
                 quantity,
-                product.getDecimalPrice(),
-                product.getDecimalPrice().multiply(BigDecimal.valueOf(reminder + quotient))
+                price,
+                price.subtract(total),
+                total
         );
     }
 }

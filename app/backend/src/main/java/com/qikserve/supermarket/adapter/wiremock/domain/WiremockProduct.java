@@ -25,6 +25,6 @@ public class WiremockProduct {
     private List<WiremockPromotion> promotions;
 
     public BigDecimal getDecimalPrice() {
-        return new BigDecimal(this.getPrice()).divide(BigDecimal.valueOf(100L));
+        return new BigDecimal(this.getPrice()).divide(BigDecimal.valueOf(100));
     }
 }

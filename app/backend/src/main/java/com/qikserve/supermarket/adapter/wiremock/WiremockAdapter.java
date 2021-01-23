@@ -21,6 +21,7 @@ public class WiremockAdapter implements ProductAdapter {
                         wp.getName(),
                         null,
                         wp.getDecimalPrice(),
+                        null,
                         null))
                 .collect(Collectors.toList());
     }

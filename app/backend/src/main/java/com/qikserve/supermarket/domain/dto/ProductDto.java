@@ -21,4 +21,5 @@ public class ProductDto {
     private Integer quantity;
     private BigDecimal price;
     private BigDecimal discount;
+    private BigDecimal total;
 }
