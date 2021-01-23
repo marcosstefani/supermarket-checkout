@@ -4,7 +4,7 @@ import com.qikserve.supermarket.domain.dto.ProductDto;
 
 import java.util.List;
 
-public interface Product {
+public interface ProductAdapter {
     List<ProductDto> getAll();
     ProductDto getOne(String id);
 }

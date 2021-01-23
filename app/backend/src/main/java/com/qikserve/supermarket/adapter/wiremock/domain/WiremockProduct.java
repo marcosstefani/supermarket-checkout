@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -20,7 +21,10 @@ public class WiremockProduct {
     private String id;
     private String name;
     private BigInteger price;
-    @JacksonXmlProperty(localName = "promotions")
-    @JacksonXmlElementWrapper(localName = "promotions", useWrapping = true)
+    @JacksonXmlElementWrapper(localName = "promotions")
     private List<WiremockPromotion> promotions;
+
+    public BigDecimal getDecimalPrice() {
+        return new BigDecimal(this.getPrice()).divide(BigDecimal.valueOf(100L));
+    }
 }

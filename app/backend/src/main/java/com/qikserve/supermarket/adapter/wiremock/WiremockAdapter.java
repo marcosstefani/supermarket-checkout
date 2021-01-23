@@ -1,16 +1,28 @@
 package com.qikserve.supermarket.adapter.wiremock;
 
-import com.qikserve.supermarket.adapter.port.Product;
+import com.qikserve.supermarket.adapter.port.ProductAdapter;
 import com.qikserve.supermarket.domain.dto.ProductDto;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class WiremockAdapter implements Product {
+@AllArgsConstructor
+public class WiremockAdapter implements ProductAdapter {
+    private WiremockApi api;
+
     @Override
     public List<ProductDto> getAll() {
-        return null;
+        return api.getAll().stream()
+                .map(wp -> new ProductDto(
+                        wp.getId(),
+                        wp.getName(),
+                        null,
+                        wp.getDecimalPrice(),
+                        null))
+                .collect(Collectors.toList());
     }
 
     @Override
