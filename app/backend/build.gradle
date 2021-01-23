@@ -8,6 +8,12 @@ group = 'com.qikserve'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 repositories {
 	mavenCentral()
 }
@@ -17,6 +23,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+
+	implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.6.1'
+	implementation 'io.github.resilience4j:resilience4j-micrometer:1.6.1'
+	implementation 'io.github.resilience4j:resilience4j-retry:1.6.1'
+
+	implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.12.0'
+	implementation 'com.google.code.gson:gson:2.8.6'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
