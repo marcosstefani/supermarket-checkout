@@ -18,37 +18,37 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
-class WiremockPromotionByXGetYFreeCalculationTest {
+class WiremockPromotionQuantityBasedPriceOverrideCalculationTest {
     @Spy
-    private WiremockPromotionByXGetYFreeCalculation calculation;
+    private WiremockPromotionQuantityBasedPriceOverrideCalculation calculation;
 
     private WiremockPromotion promotionMock = new WiremockPromotion(
-            "ZRAwbsO2qM",
-            WiremockPromotionType.BUY_X_GET_Y_FREE,
+            "ibt3EEYczW",
+            WiremockPromotionType.QTY_BASED_PRICE_OVERRIDE,
             2,
+            BigInteger.valueOf(1799),
             null,
-            1,
             null
     );
 
     private WiremockProduct productMock = new WiremockProduct(
-            "PWWe3w1SDU",
-            "Amazing Burger!",
-            BigInteger.valueOf(999),
+            "Dwt5F7KAhi",
+            "Amazing Pizza!",
+            BigInteger.valueOf(1099),
             Arrays.asList(promotionMock)
     );
 
     @Test
     void ShouldReturnTheDiscountAmountAccordingToTheCalculation() {
         ProductDto dto = calculation.execute(productMock, promotionMock, 5);
-        assertEquals(dto.getTotal(), BigDecimal.valueOf(29.97));
-        assertEquals(dto.getDiscount(), BigDecimal.valueOf(19.98));
-        assertEquals(dto.getPrice(), BigDecimal.valueOf(49.95));
+        assertEquals(dto.getTotal(), BigDecimal.valueOf(46.97));
+        assertEquals(dto.getDiscount(), BigDecimal.valueOf(7.98));
+        assertEquals(dto.getPrice(), BigDecimal.valueOf(54.95));
     }
 
     @Test
     void ShouldReturnTrueIfTheTypeOfPromotionIsCorrect() {
-        assertTrue(calculation.canHandle(WiremockPromotionType.BUY_X_GET_Y_FREE));
+        assertTrue(calculation.canHandle(WiremockPromotionType.QTY_BASED_PRICE_OVERRIDE));
         assertFalse(calculation.canHandle(WiremockPromotionType.FLAT_PERCENT));
     }
 }

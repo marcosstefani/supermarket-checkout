@@ -11,44 +11,42 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
-class WiremockPromotionByXGetYFreeCalculationTest {
+class WiremockPromotionFlatPercentCalculationTest {
     @Spy
-    private WiremockPromotionByXGetYFreeCalculation calculation;
+    private WiremockPromotionFlatPercentCalculation calculation;
 
     private WiremockPromotion promotionMock = new WiremockPromotion(
-            "ZRAwbsO2qM",
-            WiremockPromotionType.BUY_X_GET_Y_FREE,
-            2,
+            "Gm1piPn7Fg",
+            WiremockPromotionType.FLAT_PERCENT,
             null,
-            1,
-            null
+            null,
+            null,
+            10
     );
 
     private WiremockProduct productMock = new WiremockProduct(
-            "PWWe3w1SDU",
-            "Amazing Burger!",
-            BigInteger.valueOf(999),
+            "C8GDyLrHJb",
+            "Amazing Salad!",
+            BigInteger.valueOf(499),
             Arrays.asList(promotionMock)
     );
 
     @Test
     void ShouldReturnTheDiscountAmountAccordingToTheCalculation() {
         ProductDto dto = calculation.execute(productMock, promotionMock, 5);
-        assertEquals(dto.getTotal(), BigDecimal.valueOf(29.97));
-        assertEquals(dto.getDiscount(), BigDecimal.valueOf(19.98));
-        assertEquals(dto.getPrice(), BigDecimal.valueOf(49.95));
+        assertEquals(dto.getTotal(), BigDecimal.valueOf(22.45));
+        assertEquals(dto.getDiscount(), BigDecimal.valueOf(2.50).setScale(2, RoundingMode.HALF_EVEN));
+        assertEquals(dto.getPrice(), BigDecimal.valueOf(24.95));
     }
 
     @Test
     void ShouldReturnTrueIfTheTypeOfPromotionIsCorrect() {
-        assertTrue(calculation.canHandle(WiremockPromotionType.BUY_X_GET_Y_FREE));
-        assertFalse(calculation.canHandle(WiremockPromotionType.FLAT_PERCENT));
+        assertTrue(calculation.canHandle(WiremockPromotionType.FLAT_PERCENT));
+        assertFalse(calculation.canHandle(WiremockPromotionType.QTY_BASED_PRICE_OVERRIDE));
     }
 }
