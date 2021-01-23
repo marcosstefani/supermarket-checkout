@@ -16,8 +16,5 @@ integration:
     basicAuth:
       username: admin
       password: admin
-  rest.retry:
-    maxAttempts: 3
-    waitDurationMilis: 100
   wiremock:
     baseUrl: app-wiremock
