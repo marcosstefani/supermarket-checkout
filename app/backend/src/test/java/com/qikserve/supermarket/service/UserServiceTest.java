@@ -28,7 +28,7 @@ class UserServiceTest {
     @InjectMocks
     private UserService service;
 
-    private User userMock = new User("Jan");
+    private final User userMock = new User("Jan");
 
     @Test
     void shouldReturnAUserIfItExists() {
