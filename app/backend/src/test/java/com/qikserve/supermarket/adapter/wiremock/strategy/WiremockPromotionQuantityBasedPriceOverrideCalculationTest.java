@@ -38,13 +38,13 @@ class WiremockPromotionQuantityBasedPriceOverrideCalculationTest {
     );
 
     @Test
-    void ShouldReturnTheDiscountAmountAccordingToTheCalculation() {
+    void shouldReturnTheDiscountAmountAccordingToTheCalculation() {
         BigDecimal discount = calculation.execute(productMock, promotionMock, 5);
         assertEquals(discount, BigDecimal.valueOf(7.98));
     }
 
     @Test
-    void ShouldReturnTrueIfTheTypeOfPromotionIsCorrect() {
+    void shouldReturnTrueIfTheTypeOfPromotionIsCorrect() {
         assertTrue(calculation.canHandle(WiremockPromotionType.QTY_BASED_PRICE_OVERRIDE));
         assertFalse(calculation.canHandle(WiremockPromotionType.FLAT_PERCENT));
     }

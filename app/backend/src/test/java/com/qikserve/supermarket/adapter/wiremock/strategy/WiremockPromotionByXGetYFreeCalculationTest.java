@@ -38,13 +38,13 @@ class WiremockPromotionByXGetYFreeCalculationTest {
     );
 
     @Test
-    void ShouldReturnTheDiscountAmountAccordingToTheCalculation() {
+    void shouldReturnTheDiscountAmountAccordingToTheCalculation() {
         BigDecimal discount = calculation.execute(productMock, promotionMock, 5);
         assertEquals(discount, BigDecimal.valueOf(19.98));
     }
 
     @Test
-    void ShouldReturnTrueIfTheTypeOfPromotionIsCorrect() {
+    void shouldReturnTrueIfTheTypeOfPromotionIsCorrect() {
         assertTrue(calculation.canHandle(WiremockPromotionType.BUY_X_GET_Y_FREE));
         assertFalse(calculation.canHandle(WiremockPromotionType.FLAT_PERCENT));
     }
