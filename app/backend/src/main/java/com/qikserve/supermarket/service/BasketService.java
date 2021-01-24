@@ -40,8 +40,9 @@ public class BasketService {
 
     public CheckoutDto checkout(String username) {
         User user = findUser(username);
-        Optional<List<Basket>> optionalBaskets = repository.findByUserAndClosed(user, false);
-        return optionalBaskets.map(baskets -> loadCheckout(baskets.get(0))).orElseThrow();
+        List<Basket> baskets = repository.findByUserAndClosed(user, false);
+        if (baskets.isEmpty()) throw new RuntimeException("Basket not found!");
+        return loadCheckout(baskets.get(0));
     }
 
     public void conclude(Integer id) {
@@ -68,13 +69,14 @@ public class BasketService {
 
     private Basket initializeBasket(String username) {
         User user = findUser(username);
-        Optional<List<Basket>> optionalBaskets = repository.findByUserAndClosed(user, false);
-        return optionalBaskets.map(baskets -> baskets.get(0)).orElse(create(user));
+        List<Basket> baskets = repository.findByUserAndClosed(user, false);
+        if (baskets.isEmpty()) return create(user);
+        return baskets.get(0);
     }
 
     private User findUser(String username) {
         User user = userService.find(username);
-        if (user == null) throw new RuntimeException("User not found");
+        if (user == null) throw new RuntimeException("User not found!");
         return user;
     }
 
