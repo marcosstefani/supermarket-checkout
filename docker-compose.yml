@@ -1,14 +1,46 @@
 version: "3.8"
 
 networks:
+  app-supermarket_net:
+    name: wiremock_net
+    driver: bridge
   app-wiremock_net:
     name: wiremock_net
     driver: bridge
+  database_net:
+    name: database_net
+    driver: bridge
 
 volumes:
-  wiremock-data:
+  supermarket-data:
 
 services:
+  app-supermarket:
+    container_name: app-supermarket
+    build:
+      context: "./app/backend"
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres-supermarket
+      - app-wiremock
+    environment:
+      TZ: Europe/London
+      SECURITY_USER: super
+      SECURITY_PASS: 176eac25-aff4-465d-b83c-146b648057f8
+      WIREFRAME_HOST: app-wiremock
+      WIREFRAME_PORT: 8081
+      DB_HOST: postgres-supermarket
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: 12345
+      DB_SHOW_SQL: "true"
+    networks:
+      - app-supermarket_net
+      - app-wiremock_net
+      - database_net
+
   app-wiremock:
     container_name: app-wiremock
     build:
@@ -17,3 +49,18 @@ services:
       - 8081:8081
     networks:
       - app-wiremock_net
+
+  postgres-supermarket:
+    image: postgres
+    container_name: postgres-supermarket
+    volumes:
+      - supermarket-data:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      TZ: Europe/London
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: postgres
+    networks:
+      - database_net

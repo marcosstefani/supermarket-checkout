@@ -3,7 +3,6 @@ package com.qikserve.supermarket.adapter.wiremock.strategy;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockProduct;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotion;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotionType;
-import com.qikserve.supermarket.domain.dto.ProductDto;
 
 import java.math.BigDecimal;
 
