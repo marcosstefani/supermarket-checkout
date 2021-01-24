@@ -20,7 +20,7 @@ public class UserService {
         return repository.findById(user).isPresent();
     }
 
-    public void create(String user) {
-        repository.save(new User(user));
+    public User create(String user) {
+        return repository.save(new User(user));
     }
 }

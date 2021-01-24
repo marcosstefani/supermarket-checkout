@@ -1,5 +1,6 @@
 package com.qikserve.supermarket.controller;
 
+import com.qikserve.supermarket.domain.User;
 import com.qikserve.supermarket.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,8 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestParam String user) {
         try {
-            service.create(user);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            User u = service.create(user);
+            return new ResponseEntity<>(u, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
