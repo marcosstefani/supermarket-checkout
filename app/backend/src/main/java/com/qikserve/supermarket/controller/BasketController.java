@@ -1,5 +1,7 @@
 package com.qikserve.supermarket.controller;
 
+import com.qikserve.supermarket.domain.Basket;
+import com.qikserve.supermarket.domain.BasketProduct;
 import com.qikserve.supermarket.domain.dto.CheckoutDto;
 import com.qikserve.supermarket.domain.dto.ProductDto;
 import com.qikserve.supermarket.service.BasketService;
@@ -27,8 +29,8 @@ public class BasketController {
     @PostMapping("/product")
     public ResponseEntity<?> send(@RequestParam String user, @RequestBody ProductDto product) {
         try {
-            service.send(user, product.getId(), product.getQuantity());
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            BasketProduct basketProduct = service.send(user, product.getId(), product.getQuantity());
+            return new ResponseEntity<>(basketProduct, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -49,8 +51,8 @@ public class BasketController {
     @PutMapping("/checkout")
     public ResponseEntity<?> checkout(@RequestParam Integer id) {
         try {
-            service.conclude(id);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            Basket basket = service.conclude(id);
+            return new ResponseEntity<>(basket, HttpStatus.ACCEPTED);
         } catch (RuntimeException e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

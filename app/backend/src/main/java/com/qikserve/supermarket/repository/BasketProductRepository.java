@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface BasketProductRepository extends CrudRepository<BasketProduct, Integer> {
     Optional<BasketProduct> findByBasketAndProduct(Basket basket, String product);
-    Optional<List<BasketProduct>> findByBasket(Basket basket);
+    List<BasketProduct> findByBasket(Basket basket);
 }

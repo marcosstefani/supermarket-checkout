@@ -26,15 +26,13 @@ public class BasketService {
         this.productService = productService;
     }
 
-    public void send(String username, String productId, Integer quantity) {
+    public BasketProduct send(String username, String productId, Integer quantity) {
         Basket basket = initializeBasket(username);
         Optional<BasketProduct> optionalBasketProduct = productRepository.findByBasketAndProduct(basket, productId);
         if (optionalBasketProduct.isPresent()) {
-            BasketProduct product = optionalBasketProduct.get();
-            product.setQuantity(quantity);
-            productRepository.save(product);
+            return update(quantity, optionalBasketProduct.get());
         } else {
-            create(basket, productId, quantity);
+            return create(basket, productId, quantity);
         }
     }
 
@@ -45,26 +43,26 @@ public class BasketService {
         return loadCheckout(baskets.get(0));
     }
 
-    public void conclude(Integer id) {
+    public Basket conclude(Integer id) {
         Optional<Basket> basketOptional = repository.findById(id);
         if (basketOptional.isEmpty()) throw new RuntimeException("Basket not found!");
 
         Basket basket = basketOptional.get();
         basket.setCheckoutAt(LocalDateTime.now());
         basket.setClosed(true);
-        repository.save(basket);
+        return repository.save(basket);
     }
 
     private CheckoutDto loadCheckout(Basket basket) {
         CheckoutDto result = new CheckoutDto(basket.getId());
-        Optional<List<BasketProduct>> optionalBasketProducts = productRepository.findByBasket(basket);
-        if (optionalBasketProducts.isPresent()) {
-            for (BasketProduct basketProduct: optionalBasketProducts.get()) {
-                result.addProduct(productService.getOne(basketProduct.getProduct(), basketProduct.getQuantity()));
-            }
-            return result;
+        List<BasketProduct> basketProducts = productRepository.findByBasket(basket);
+        if (basketProducts.isEmpty()) {
+            throw new RuntimeException("Basket not found!");
         }
-        throw new RuntimeException("Basket not found!");
+        for (BasketProduct basketProduct: basketProducts) {
+            result.addProduct(productService.getOne(basketProduct.getProduct(), basketProduct.getQuantity()));
+        }
+        return result;
     }
 
     private Basket initializeBasket(String username) {
@@ -83,6 +81,11 @@ public class BasketService {
     private Basket create(User user) {
         Basket basket = new Basket(user, false);
         return repository.save(basket);
+    }
+
+    private BasketProduct update(Integer quantity, BasketProduct product) {
+        product.setQuantity(quantity);
+        return productRepository.save(product);
     }
 
     private BasketProduct create(Basket basket, String productId, Integer quantity) {
