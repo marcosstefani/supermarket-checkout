@@ -1,21 +1,25 @@
 server:
   port: 8080
 
-management:
-  endpoints:
-    web.exposure.include: info, health
-  metrics:
-    distribution:
-      percentiles-histogram:
-        http: true
-        resilience4j:
-          retry.calls: true
-
 integration:
   security:
     basicAuth:
-      username: admin
-      password: admin
+      username: ${SECURITY_USER}
+      password: ${SECURITY_PASS}
   wiremock:
-    baseUrl: localhost
-    port: 8081
+    baseUrl: ${WIREFRAME_HOST}
+    port: ${WIREFRAME_PORT}
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql:${DB_HOST}:${DB_PORT}/${DB_NAME}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    show-sql: ${DB_SHOW_SQL}
+    hibernate:
+      ddl-auto: ${DB_DLL_AUTO}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
