@@ -3,6 +3,7 @@ package com.qikserve.supermarket.controller;
 import com.qikserve.supermarket.domain.dto.CheckoutDto;
 import com.qikserve.supermarket.domain.dto.ProductDto;
 import com.qikserve.supermarket.service.BasketService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/basket")
 public class BasketController {
@@ -28,17 +30,19 @@ public class BasketController {
             service.send(user, product.getId(), product.getQuantity());
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/checkout")
-    public ResponseEntity<CheckoutDto> checkout(@RequestParam String user) {
+    public ResponseEntity<?> checkout(@RequestParam String user) {
         try {
             CheckoutDto checkout = service.checkout(user);
             return new ResponseEntity<>(checkout, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -48,7 +52,8 @@ public class BasketController {
             service.conclude(id);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
