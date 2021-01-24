@@ -1,6 +1,8 @@
 package com.qikserve.supermarket.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -15,6 +17,8 @@ import javax.persistence.Table;
 @Table
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BasketProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +29,7 @@ public class BasketProduct {
     private String product;
     private Integer quantity;
 
-    public BasketProduct(Integer id, Basket basket, String product, Integer quantity) {
-        this.id = id;
+    public BasketProduct(Basket basket, String product, Integer quantity) {
         this.basket = basket;
         this.product = product;
         this.quantity = quantity;

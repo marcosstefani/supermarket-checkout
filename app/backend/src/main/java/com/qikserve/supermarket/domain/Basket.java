@@ -1,6 +1,8 @@
 package com.qikserve.supermarket.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -16,6 +18,8 @@ import java.time.LocalDateTime;
 @Table
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Basket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +30,7 @@ public class Basket {
     private boolean closed;
     private LocalDateTime createdAt;
 
-    public Basket(Integer id, User user, boolean closed) {
-        this.id = id;
+    public Basket(User user, boolean closed) {
         this.user = user;
         this.closed = closed;
         this.createdAt = LocalDateTime.now();

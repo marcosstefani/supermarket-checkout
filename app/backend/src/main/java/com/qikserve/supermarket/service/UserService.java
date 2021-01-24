@@ -12,6 +12,10 @@ public class UserService {
         this.repository = repository;
     }
 
+    public User find(String user) {
+        return repository.findById(user).orElse(null);
+    }
+
     public boolean exists(String user) {
         return repository.findById(user).isPresent();
     }

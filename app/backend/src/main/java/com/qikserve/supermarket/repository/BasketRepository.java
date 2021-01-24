@@ -5,8 +5,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BasketRepository extends CrudRepository<Basket, Integer> {
-    List<Basket> findByUsernameAndClosed(String username, boolean closed);
+    Optional<List<Basket>> findByUsernameAndClosed(String username, boolean closed);
 }
