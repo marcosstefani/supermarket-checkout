@@ -1,16 +1,17 @@
 package com.qikserve.supermarket.controller;
 
+import com.qikserve.supermarket.domain.dto.CheckoutDto;
 import com.qikserve.supermarket.domain.dto.ProductDto;
 import com.qikserve.supermarket.service.BasketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/basket")
@@ -21,21 +22,31 @@ public class BasketController {
         this.service = service;
     }
 
-    @PostMapping("/products")
-    public ResponseEntity<?> send(@RequestParam String user, @RequestBody List<ProductDto> basket) {
+    @PostMapping("/product")
+    public ResponseEntity<?> send(@RequestParam String user, @RequestBody ProductDto product) {
         try {
-            basket.forEach(productDto -> service.send(user, productDto.getId(), productDto.getQuantity()));
+            service.send(user, product.getId(), product.getQuantity());
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("/product")
-    public ResponseEntity<?> send(@RequestParam String user, @RequestBody ProductDto product) {
+    @GetMapping("/checkout")
+    public ResponseEntity<CheckoutDto> checkout(@RequestParam String user) {
         try {
-            service.send(user, product.getId(), product.getQuantity());
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            CheckoutDto checkout = service.checkout(user);
+            return new ResponseEntity<>(checkout, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/checkout")
+    public ResponseEntity<?> checkout(@RequestParam Integer id) {
+        try {
+            service.conclude(id);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

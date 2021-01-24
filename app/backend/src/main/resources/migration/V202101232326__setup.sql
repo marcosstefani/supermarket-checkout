@@ -11,11 +11,11 @@ CREATE TABLE IF NOT EXISTS basket (
     username VARCHAR(100),
     closed bool NOT NULL DEFAULT false,
     created_at TIMESTAMP DEFAULT now(),
+    checkout_at TIMESTAMP,
     CONSTRAINT basket_pkey PRIMARY KEY (id),
     CONSTRAINT basket_users_fkey
           FOREIGN KEY(username)
     	  REFERENCES users(username)
-
 );
 CREATE INDEX IF NOT EXISTS basket_status_idx ON basket USING btree (username, closed);
 

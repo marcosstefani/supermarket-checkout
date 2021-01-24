@@ -29,6 +29,7 @@ public class Basket {
     private User user;
     private boolean closed;
     private LocalDateTime createdAt;
+    private LocalDateTime checkoutAt;
 
     public Basket(User user, boolean closed) {
         this.user = user;

@@ -17,4 +17,8 @@ public class ProductService {
     public List<ProductDto> getAll() {
         return productAdapter.getAll();
     }
+
+    public ProductDto getOne(String id, Integer quantity) {
+        return productAdapter.getOne(id, quantity);
+    }
 }
