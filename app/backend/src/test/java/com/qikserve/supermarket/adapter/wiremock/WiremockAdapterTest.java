@@ -38,7 +38,7 @@ class WiremockAdapterTest {;
 
     @Spy
     @InjectMocks
-    private WiremockAdapter adapter = new WiremockAdapter(api, Arrays.asList(flatPercentCalculation, quantityBasedPriceOverrideCalculation, byXGetYFreeCalculation));
+    private WiremockAdapter adapter;
 
     private final WiremockPromotion byXGetYFreePromotionMock = new WiremockPromotion(
             "ZRAwbsO2qM",

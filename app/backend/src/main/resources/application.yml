@@ -24,7 +24,7 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
-    show-sql: ${DB_SHOW_SQL}
+    show-sql: true
     hibernate:
       ddl-auto: validate
     properties:

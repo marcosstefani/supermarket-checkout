@@ -1,10 +1,10 @@
 package com.qikserve.supermarket.adapter.wiremock.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,14 +13,13 @@ import java.math.BigInteger;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class WiremockPromotion {
     private String id;
     private WiremockPromotionType type;
-    @JsonProperty("required_qty")
-    private Integer requiredQty;
+    private Integer required_qty;
     private BigInteger price;
-    @JsonProperty("free_qty")
-    private Integer freeQty;
+    private Integer free_qty;
     private Integer amount;
 
     public BigDecimal getDecimalPrice() {

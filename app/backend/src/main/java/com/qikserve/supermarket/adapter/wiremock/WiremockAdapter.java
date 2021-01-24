@@ -6,7 +6,6 @@ import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotion;
 import com.qikserve.supermarket.adapter.wiremock.domain.WiremockPromotionType;
 import com.qikserve.supermarket.adapter.wiremock.strategy.WiremockPromotionStrategy;
 import com.qikserve.supermarket.domain.dto.ProductDto;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class WiremockAdapter implements ProductAdapter {
-    private WiremockApi api;
+
+    private final WiremockApi api;
     private final List<WiremockPromotionStrategy> calculations;
 
     public WiremockAdapter(WiremockApi api, List<WiremockPromotionStrategy> calculations) {
@@ -51,16 +50,20 @@ public class WiremockAdapter implements ProductAdapter {
 
         // this loop guarantees the order in which discounts are applied
         for (WiremockPromotionType type: WiremockPromotionType.values()) {
-            log.info("type: " + type.name());
             Optional<WiremockPromotion> promotionOpt = wiremockProduct.getPromotions().stream().filter(promotion -> promotion.getType() == type).findFirst();
             if (promotionOpt.isPresent()) {
-                Optional<WiremockPromotionStrategy> strategyOpt = calculations.stream().filter(calc -> calc.canHandle(promotionOpt.get().getType())).findFirst();
-                if (strategyOpt.isPresent()) {
-                    discount = discount.add(strategyOpt.get().execute(wiremockProduct, promotionOpt.get(), quantity));
-                }
+                discount = discount.add(calculateDiscount(wiremockProduct, promotionOpt.get(), quantity));
             }
         }
         return discount;
+    }
+
+    private BigDecimal calculateDiscount(WiremockProduct product, WiremockPromotion promotion, Integer quantity) {
+        return calculations.stream()
+                .filter(strategy -> strategy.canHandle(promotion.getType()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Strategy of calculation not implemented!"))
+                .execute(product, promotion, quantity);
     }
 
     private ProductDto resume(ProductDto productDto, BigDecimal discount, Integer quantity) {
