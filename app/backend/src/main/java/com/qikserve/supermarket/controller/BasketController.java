@@ -30,4 +30,14 @@ public class BasketController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/product")
+    public ResponseEntity<?> send(@RequestParam String user, @RequestBody ProductDto product) {
+        try {
+            service.send(user, product.getId(), product.getQuantity());
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
