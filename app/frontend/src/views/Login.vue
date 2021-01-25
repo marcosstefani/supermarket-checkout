@@ -6,17 +6,18 @@ export default {
   data: () => ({
     notFound: false,
     checked: false,
-    user: ""
   }),
   methods: {
     async login() {
       try {
         if (this.notFound == false) {
+          console.log("notfound");
           this.user = this.$refs.username.value
           await service.verify(this.user)
         } else {
+          console.log("found " + this.checked);
           this.notFound = false
-          if (this.checked == false) {
+          if (this.checked == true) {
             await service.create(this.user)
           }
         }

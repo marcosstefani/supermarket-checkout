@@ -1,90 +1,29 @@
 <script>
+import QBasket from '../components/QBasket.vue';
+
 export default {
-    name: "q-navbar",
-    props: {
-        basket: Array
-    }
+  name: "q-nav-bar",
+  components: {
+    QBasket
+  },
+  props: {
+      basket: String
+  },
 }
 </script>
 
 <template>
-<div class="popover popover-bottom">
-  <figure class="avatar mr-2 badge" data-badge="8">
-    <img src="@/assets/img/basket.svg" alt="Basket">
-  </figure>
-  <div class="popover-container">
-    <div class="panel">
-      <h5 class="panel-header text-center text-primary">
-        Basket
-      </h5>
-      <div v-if="basket.length == 0" class="panel-body">
-        <h3>Basket is empty</h3>
-      </div>
-      <div v-if="basket.length > 0" class="panel-body">
-        <div class="divider"></div>
-        <div class="tile">
-          <div class="tile-content">
-            <div class="tile-title">Product XYZ</div>
-            <h3 class="text-success">19.90<span>un</span></h3>
-          </div>
-          <div class="tile-action">
-            <h6>qtd: 22x</h6>
-            <button class="btn btn-action btn-sm"><h6>+</h6></button>
-            <button class="btn btn-action btn-sm"><h6>-</h6></button>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <div class="tile">
-          <div class="tile-content">
-            <div class="tile-title">Product XYZ</div>
-            <h3 class="text-success">19.90</h3>
-          </div>
-          <div class="tile-action">
-            <h6>qtd: 2x</h6>
-            <button class="btn btn-action btn-sm"><h6>+</h6></button>
-            <button class="btn btn-action btn-sm"><h6>-</h6></button>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <div class="tile">
-          <div class="tile-content">
-            <div class="tile-title">Product XYZ</div>
-            <h3 class="text-success">19.90</h3>
-          </div>
-          <div class="tile-action">
-            <h6>qtd: 2x</h6>
-            <button class="btn btn-action btn-sm"><h6>+</h6></button>
-            <button class="btn btn-action btn-sm"><h6>-</h6></button>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <div class="tile">
-          <div class="tile-content">
-            <div class="tile-title">Product XYZ</div>
-            <h3 class="text-success">19.90</h3>
-          </div>
-          <div class="tile-action">
-            <h6>qtd: 2x</h6>
-            <button class="btn btn-action btn-sm"><h6>+</h6></button>
-            <button class="btn btn-action btn-sm"><h6>-</h6></button>
-          </div>
-        </div>
-      </div>
-    </div>
+<header class="navbar bg-secondary">
+  <div class="navbar-section">
+    <figure class="avatar avatar-xl mr-2">
+      <img src="@/assets/img/logo.png" alt="Logo">
+    </figure>
   </div>
-</div>
+  <div class="navbar-center">
+    <h5 class="text-primary">Supermarket</h5>
+  </div>
+  <div class="navbar-section">
+    <q-basket :basket="`${basket}`"/>
+  </div>
+</header>
 </template>
-
-<style lang="sass">
-#app .app-body
-  .navbar
-    figure
-      background-color: $color-secondary
-    h5
-      padding-top: 10px
-  
-  .navbar .panel
-    background-color: white !important
-    .tile-action button h6
-      padding-top: 3px
-</style>
