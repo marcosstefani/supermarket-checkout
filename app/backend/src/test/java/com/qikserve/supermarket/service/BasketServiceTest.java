@@ -78,10 +78,11 @@ class BasketServiceTest {
         doReturn(userMock).when(userService).find(anyString());
         doReturn(Collections.singletonList(basketMock)).when(basketRepository).findByUserAndClosed(userMock, false);
         doReturn(Optional.of(basketProductMock)).when(productRepository).findByBasketAndProduct(any(Basket.class), anyString());
+        doReturn(productDtoMock).when(productService).getOne(anyString(), anyInt());
         doReturn(updated).when(productRepository).save(any(BasketProduct.class));
 
-        BasketProduct product = service.send("Jan", "4MB7UfpTQs", 5);
-        assertEquals(product.getProduct(), "4MB7UfpTQs");
+        ProductDto product = service.send("Jan", "4MB7UfpTQs", 5);
+        assertEquals(product.getId(), "Dwt5F7KAhi");
         assertEquals(product.getQuantity(), 5);
     }
 
@@ -94,10 +95,11 @@ class BasketServiceTest {
         doReturn(new ArrayList<>()).when(basketRepository).findByUserAndClosed(userMock, false);
         doReturn(basketMock).when(basketRepository).save(any(Basket.class));
         doReturn(Optional.empty()).when(productRepository).findByBasketAndProduct(any(Basket.class), anyString());
+        doReturn(productDtoMock).when(productService).getOne(anyString(), anyInt());
         doReturn(updated).when(productRepository).save(any(BasketProduct.class));
 
-        BasketProduct product = service.send("Jan", "4MB7UfpTQs", 5);
-        assertEquals(product.getProduct(), "4MB7UfpTQs");
+        ProductDto product = service.send("Jan", "Dwt5F7KAhi", 5);
+        assertEquals(product.getId(), "Dwt5F7KAhi");
         assertEquals(product.getQuantity(), 5);
     }
 

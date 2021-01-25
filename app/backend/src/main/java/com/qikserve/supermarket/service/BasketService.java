@@ -4,6 +4,7 @@ import com.qikserve.supermarket.domain.Basket;
 import com.qikserve.supermarket.domain.BasketProduct;
 import com.qikserve.supermarket.domain.User;
 import com.qikserve.supermarket.domain.dto.CheckoutDto;
+import com.qikserve.supermarket.domain.dto.ProductDto;
 import com.qikserve.supermarket.repository.BasketProductRepository;
 import com.qikserve.supermarket.repository.BasketRepository;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,10 @@ public class BasketService {
         this.productService = productService;
     }
 
-    public BasketProduct send(String username, String productId, Integer quantity) {
+    public ProductDto send(String username, String productId, Integer quantity) {
         Basket basket = initializeBasket(username);
         Optional<BasketProduct> optionalBasketProduct = productRepository.findByBasketAndProduct(basket, productId);
-        if (optionalBasketProduct.isPresent()) {
-            return update(quantity, optionalBasketProduct.get());
-        } else {
-            return create(basket, productId, quantity);
-        }
+        return optionalBasketProduct.map(basketProduct -> update(quantity, basketProduct)).orElseGet(() -> create(basket, productId, quantity));
     }
 
     public CheckoutDto checkout(String username) {
@@ -83,13 +80,15 @@ public class BasketService {
         return repository.save(basket);
     }
 
-    private BasketProduct update(Integer quantity, BasketProduct product) {
+    private ProductDto update(Integer quantity, BasketProduct product) {
         product.setQuantity(quantity);
-        return productRepository.save(product);
+        productRepository.save(product);
+        return productService.getOne(product.getProduct(), product.getQuantity());
     }
 
-    private BasketProduct create(Basket basket, String productId, Integer quantity) {
+    private ProductDto create(Basket basket, String productId, Integer quantity) {
         BasketProduct product = new BasketProduct(basket, productId, quantity);
-        return productRepository.save(product);
+        productRepository.save(product);
+        return productService.getOne(product.getProduct(), product.getQuantity());
     }
 }
