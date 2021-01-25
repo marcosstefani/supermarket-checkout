@@ -7,6 +7,6 @@ module.exports = {
     },
   },
   devServer: {
-    proxy: 'http://localhost:8085',
+    proxy: 'http://app-supermarket:8085',
   }
 }

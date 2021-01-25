@@ -7,7 +7,7 @@ export default {
     } = await api
       .get(`/user/verify?user=${username}`, {}, {
         headers: {
-          'Authorization': 'Basic c3VwZXI6MTc2ZWFjMjUtYWZmNC00NjVkLWI4M2MtMTQ2YjY0ODA1N2Y4' 
+          'Authorization': 'Basic YWRtaW46YWRtaW4='
         }
       })
     return data
@@ -18,7 +18,7 @@ export default {
     } = await api
       .post(`/user/create?user=${username}`, {}, {
         headers: {
-          'Authorization': 'Basic c3VwZXI6MTc2ZWFjMjUtYWZmNC00NjVkLWI4M2MtMTQ2YjY0ODA1N2Y4' 
+          'Authorization': 'Basic YWRtaW46YWRtaW4='
         }
       })
     return data

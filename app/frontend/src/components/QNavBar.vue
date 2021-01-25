@@ -17,7 +17,10 @@ export default {
       <h5 class="panel-header text-center text-primary">
         Basket
       </h5>
-      <div class="panel-body">
+      <div v-if="basket.length == 0" class="panel-body">
+        <h3>Basket is empty</h3>
+      </div>
+      <div v-if="basket.length > 0" class="panel-body">
         <div class="divider"></div>
         <div class="tile">
           <div class="tile-content">
