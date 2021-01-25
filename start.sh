@@ -1,8 +1,3 @@
-cd app/backend/
-
-./gradlew build
-
-cd ..
 docker-compose up --force-recreate --build -d
 
 printf '\nWaiting for the health of the service.'
