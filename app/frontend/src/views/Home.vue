@@ -12,7 +12,7 @@ export default {
     basket: [{"name": "Amazing Pizza!", "price": 19.99, "quantity": 2}, {"name": "Amazing Burger!", "price": 9.99, "quantity": 1}]
   }),
   mounted() {
-    this.verify()
+    // this.verify()
   },
   methods: {
     async verify() {

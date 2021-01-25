@@ -18,17 +18,17 @@ volumes:
   supermarket-data:
 
 services:
-  front-supermarket:
-    container_name: front-supermarket
-    build: 
-      context: "./app/frontend"
-    ports:
-      - 8080:8080
-    depends_on: 
-      - app-supermarket
-    networks:
-      - front-supermarket_net
-      - app-supermarket_net
+  # front-supermarket:
+  #   container_name: front-supermarket
+  #   build: 
+  #     context: "./app/frontend"
+  #   ports:
+  #     - 8080:8080
+  #   depends_on: 
+  #     - app-supermarket
+  #   networks:
+  #     - front-supermarket_net
+  #     - app-supermarket_net
 
   app-supermarket:
     container_name: app-supermarket
