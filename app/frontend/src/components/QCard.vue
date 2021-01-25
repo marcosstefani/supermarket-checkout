@@ -1,12 +1,10 @@
 <script>
 export default {
   name: "q-card",
-  props: {
-    product: String
-  },
+  props: ['product'],
   methods: {
-    parsedProduct() {
-      return JSON.parse(this.product)
+    updateBasket(product) {
+      this.$emit('update-basket', product)
     }
   }
 }
@@ -15,17 +13,16 @@ export default {
 <template>
 <div class="panel panel-card">
   <div class="panel-header text-center">
-    <div class="panel-title h5 mt-10">{{ parsedProduct().name }}</div>
+    <div class="panel-title h5 mt-10">{{ product.name }}</div>
   </div>
   <div class="panel-body">
     <div class="tile">
       <div class="tile-content text-center">
-        <h3 class="text-success">{{ parsedProduct().price }}<span>un</span></h3>
+        <h3 class="text-success">{{ product.price }}<span>un</span></h3>
       </div>
     </div>
     <p>
-      <button class="btn btn-action btn-sm"><h6 class="icon-center">+</h6></button>
-      <button class="btn btn-action btn-sm"><h6 class="icon-center">-</h6></button>
+      <button @click.prevent="updateBasket(product)" class="btn btn-action btn-sm"><h6 class="icon-center">+</h6></button>
     </p>
   </div>
 </div>
