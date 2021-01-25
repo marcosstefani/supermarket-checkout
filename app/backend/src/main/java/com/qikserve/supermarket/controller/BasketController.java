@@ -30,6 +30,7 @@ public class BasketController {
     public ResponseEntity<?> send(@RequestParam String user, @RequestBody ProductDto product) {
         try {
             ProductDto productDto = service.send(user, product.getId(), product.getQuantity());
+            if (productDto == null) return new ResponseEntity<>(HttpStatus.ACCEPTED);
             return new ResponseEntity<>(productDto, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             log.error(e.getMessage(), e);
