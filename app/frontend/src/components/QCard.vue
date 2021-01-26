@@ -18,7 +18,7 @@ export default {
   <div class="panel-body">
     <div class="tile">
       <div class="tile-content text-center">
-        <h3 class="text-success">{{ product.price.toFixed(2) }}<span>un</span></h3>
+        <h3 class="text-success"><span>£ </span>{{ product.price.toFixed(2) }}<span>un</span></h3>
       </div>
     </div>
     <p>

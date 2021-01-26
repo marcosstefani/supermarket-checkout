@@ -75,7 +75,9 @@ export default {
                 <div class="tile">
                   <div class="tile-content">
                     <div class="tile-title">{{ product.name }}</div>
-                    <h3 class="text-success">{{ product.total.toFixed(2) }}  <span><s>{{ product.price.toFixed(2) }}</s></span></h3>
+                    <h3 class="text-success"><h6>£ </h6>{{ product.total.toFixed(2) }}  
+                      <span v-if="product.total.toFixed(2) != product.price.toFixed(2)"><s><h6>£ </h6>{{ product.price.toFixed(2) }}</s></span>
+                    </h3>
                   </div>
                   <div class="tile-action">
                     <h6>qtd: {{ product.quantity }}</h6>
@@ -127,9 +129,14 @@ export default {
       padding: 0px
       margin-top: 15px
 
-    .tile .tile-content .text-success span
-      font-size: 18px
-      color: gray
+    .tile .tile-content .text-success
+      span
+        font-size: 18px
+        color: gray
+        h6
+          font-size: 11px
+      h6
+        display: inline
 
     .tile-action button
       margin-right: 3px
