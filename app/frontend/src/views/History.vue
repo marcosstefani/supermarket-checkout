@@ -53,6 +53,7 @@ export default {
       <button @click.prevent="keepBuying()" class="btn">Keep buying</button>
     </div>
   </div>
+  <h5 class="text-center p-centered col-3 resume-history" v-if="this.orders.length == 0">You don't have any orders yet</h5>
   <div v-for="order in this.orders" :key="order.orderNumber" class="panel p-centered col-3 resume-history">
     <h4 class="text-center text-primary">Order {{ order.orderNumber }}</h4>
     <h6 class="text-center">{{ this.formatDate(order.checkoutAt) }}</h6>

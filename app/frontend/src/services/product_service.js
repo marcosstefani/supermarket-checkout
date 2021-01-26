@@ -6,9 +6,7 @@ export default {
       data
     } = await api
       .get(`/products`, {}, {
-        headers: {
-          'Authorization': 'Basic YWRtaW46YWRtaW4='
-        }
+        headers: {}
       })
     return data
   }

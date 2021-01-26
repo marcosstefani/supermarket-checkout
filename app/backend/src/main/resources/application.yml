@@ -2,10 +2,6 @@ server:
   port: 8085
 
 integration:
-  security:
-    basicAuth:
-      username: ${SECURITY_USER}
-      password: ${SECURITY_PASS}
   wiremock:
     baseUrl: ${WIREFRAME_HOST}
     port: ${WIREFRAME_PORT}

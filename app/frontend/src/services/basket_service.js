@@ -6,9 +6,7 @@ export default {
       data
     } = await api
       .post(`/basket/product?user=${username}`, product, {
-        headers: {
-          'Authorization': 'Basic YWRtaW46YWRtaW4='
-        }
+        headers: {}
       })
     return data
   },
@@ -17,9 +15,7 @@ export default {
       data
     } = await api
       .get(`/basket/checkout?user=${username}`, {}, {
-        headers: {
-          'Authorization': 'Basic YWRtaW46YWRtaW4='
-        }
+        headers: {}
       })
     return data
   },
@@ -28,9 +24,7 @@ export default {
       data
     } = await api
       .put(`/basket/checkout?id=${id}`, {}, {
-        headers: {
-          'Authorization': 'Basic YWRtaW46YWRtaW4='
-        }
+        headers: {}
       })
     return data
   },
@@ -39,9 +33,7 @@ export default {
       data
     } = await api
       .get(`/basket/closed?user=${username}`, {}, {
-        headers: {
-          'Authorization': 'Basic YWRtaW46YWRtaW4='
-        }
+        headers: {}
       })
     return data
   }

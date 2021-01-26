@@ -4,9 +4,6 @@ networks:
   app-supermarket_net:
     name: wiremock_net
     driver: bridge
-  front-supermarket_net:
-    name: front-supermarket_net
-    driver: bridge
   app-wiremock_net:
     name: wiremock_net
     driver: bridge
@@ -18,18 +15,6 @@ volumes:
   supermarket-data:
 
 services:
-  # front-supermarket:
-  #   container_name: front-supermarket
-  #   build: 
-  #     context: "./app/frontend"
-  #   ports:
-  #     - 8080:8080
-  #   depends_on: 
-  #     - app-supermarket
-  #   networks:
-  #     - front-supermarket_net
-  #     - app-supermarket_net
-
   app-supermarket:
     container_name: app-supermarket
     build:
@@ -41,8 +26,6 @@ services:
       - app-wiremock
     environment:
       TZ: Europe/London
-      SECURITY_USER: admin
-      SECURITY_PASS: admin
       WIREFRAME_HOST: app-wiremock
       WIREFRAME_PORT: 8081
       DB_HOST: postgres-supermarket

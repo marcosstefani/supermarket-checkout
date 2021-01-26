@@ -6,9 +6,7 @@ export default {
       data
     } = await api
       .get(`/user/verify?user=${username}`, {}, {
-        headers: {
-          'Authorization': 'Basic YWRtaW46YWRtaW4='
-        }
+        headers: {}
       })
     return data
   },
@@ -17,9 +15,7 @@ export default {
       data
     } = await api
       .post(`/user/create?user=${username}`, {}, {
-        headers: {
-          'Authorization': 'Basic YWRtaW46YWRtaW4='
-        }
+        headers: {}
       })
     return data
   }
