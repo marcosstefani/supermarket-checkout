@@ -11,7 +11,7 @@ export default {
   }),
   mounted() {
     this.identification = this.$route.query.identification
-    basket_service.findCheckout(this.identification).then(response => {
+    basket_service.startCheckout(this.identification).then(response => {
       var quantity = 0
       for (let i = 0; i < response.products.length; i++) {
         const element = response.products[i];

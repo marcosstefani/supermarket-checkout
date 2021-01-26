@@ -50,7 +50,7 @@ public class BasketController {
         }
     }
 
-    @GetMapping("/checkout")
+    @PostMapping("/checkout")
     public ResponseEntity<?> checkout(@RequestParam String user) {
         try {
             CheckoutDto checkout = service.checkout(user);

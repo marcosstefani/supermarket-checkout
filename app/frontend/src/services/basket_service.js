@@ -10,11 +10,11 @@ export default {
       })
     return data
   },
-  async findCheckout(username) {
+  async startCheckout(username) {
     const {
       data
     } = await api
-      .get(`/basket/checkout?user=${username}`, {}, {
+      .post(`/basket/checkout?user=${username}`, {}, {
         headers: {}
       })
     return data

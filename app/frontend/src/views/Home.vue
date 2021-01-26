@@ -22,7 +22,7 @@ export default {
     product_service.all().then(response => {
       this.products = response
     })
-    basket_service.findCheckout(this.identification).then(response => {
+    basket_service.startCheckout(this.identification).then(response => {
       for (let i = 0; i < response.products.length; i++) {
         const element = response.products[i];
         if (element.quantity > 0) {
