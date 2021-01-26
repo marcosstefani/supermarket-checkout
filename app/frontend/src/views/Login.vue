@@ -2,26 +2,27 @@
 import service from "@/services/login_service";
 
 export default {
-  name: 'Home',
+  name: 'Login',
   data: () => ({
     notFound: false,
     checked: false,
+    identification: ''
   }),
   methods: {
     async login() {
       try {
         if (this.notFound == false) {
           console.log("notfound");
-          this.user = this.$refs.username.value
-          await service.verify(this.user)
+          this.identification = this.$refs.username.value
+          await service.verify(this.identification)
         } else {
           console.log("found " + this.checked);
           this.notFound = false
           if (this.checked == true) {
-            await service.create(this.user)
+            await service.create(this.identification)
           }
         }
-        var identification = this.user
+        var identification = this.identification
         this.$router.push({
           path: "/home",
           query: {
@@ -44,7 +45,7 @@ export default {
 </script>
 
 <template>
-<div class="panel p-centered col-3 min-400" style="margin-top: 10vh;">
+<div class="panel p-centered col-3 min-400">
   <div class="panel-header text-center">
     <figure class="avatar avatar-xl mr-2">
       <img src="@/assets/img/logo.png" alt="Logo">
@@ -74,6 +75,7 @@ export default {
     background-color: white
   .min-400
     min-width: 400px !important
+    margin-top: 10vh
 
   .toast span
     font-size: 11px

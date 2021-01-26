@@ -67,10 +67,11 @@ public class WiremockAdapter implements ProductAdapter {
     }
 
     private ProductDto resume(ProductDto productDto, BigDecimal discount, Integer quantity) {
-        BigDecimal price = productDto.getPrice().multiply(BigDecimal.valueOf(quantity)).setScale(2, RoundingMode.HALF_EVEN);
-        productDto.setPrice(price);
-        productDto.setDiscount(discount);
-        productDto.setTotal(price.subtract(discount));
+        BigDecimal price = productDto.getPrice().multiply(BigDecimal.valueOf(quantity));
+        productDto.setQuantity(quantity);
+        productDto.setPrice(price.setScale(2, RoundingMode.HALF_EVEN));
+        productDto.setDiscount(discount.setScale(2, RoundingMode.HALF_EVEN));
+        productDto.setTotal(price.subtract(discount).setScale(2, RoundingMode.HALF_EVEN));
         return productDto;
     }
 

@@ -81,10 +81,6 @@ public class BasketService {
     }
 
     private ProductDto update(Integer quantity, BasketProduct product) {
-        if (quantity == 0) {
-            productRepository.delete(product);
-            return null;
-        }
         product.setQuantity(quantity);
         productRepository.save(product);
         return productService.getOne(product.getProduct(), product.getQuantity());

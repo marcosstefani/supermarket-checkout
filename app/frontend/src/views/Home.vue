@@ -1,8 +1,9 @@
 <script>
-import login_service from "@/services/login_service";
+import login_service from "@/services/login_service"
 import product_service from '@/services/product_service'
-import QCard from "../components/QCard.vue";
-import QNavBar from '../components/QNavBar.vue';
+import basket_service from '@/services/basket_service'
+import QCard from "../components/QCard.vue"
+import QNavBar from '../components/QNavBar.vue'
 
 export default {
   name: "Home",
@@ -13,19 +14,28 @@ export default {
   data: () => ({
     basket: [],
     products: [],
-    basketQuantity: 0 
+    basketQuantity: 0,
+    identification: ''
   }),
   mounted() {
     this.verify()
     product_service.all().then(response => {
       this.products = response
     })
+    basket_service.findCheckout(this.identification).then(response => {
+      for (let i = 0; i < response.products.length; i++) {
+        const element = response.products[i];
+        if (element.quantity > 0) {
+          this.basket.push(element)
+        }
+      }
+    })
   },
   methods: {
     async verify() {
-      this.user = this.$route.query.identification
+      this.identification = this.$route.query.identification
       try {
-        await login_service.verify(this.user)
+        await login_service.verify(this.identification)
       } catch (error) {
         this.$router.push({
           path: "/",
@@ -46,34 +56,38 @@ export default {
       }
       return null
     },
-    updateBasketProduct(obj) {
+    async updateBasketProduct(obj) {
       for (let i = 0; i < this.basket.length; i++) {
         const element = this.basket[i];
         if (element.id == obj.id) {
-          this.basket[i] = obj
+          var response = await basket_service.sendProduct(this.identification, obj)
+          this.basket[i] = response
           break
         }
       }
     },
-    removeBasketProduct(id) {
+    async removeBasketProduct(obj) {
       for (let i = 0; i < this.basket.length; i++) {
         const element = this.basket[i];
-        if (element.id == id) {
+        if (element.id == obj.id) {
+          await basket_service.sendProduct(this.identification, obj)
           this.basket.splice(i, 1)
         }
       }
     },
-    addBasketProduct(obj) {
+    async addBasketProduct(obj) {
       var quantity = 1
       if (obj.quantity != undefined) {
         quantity = obj.quantity
       }
-      this.basket.push({
+      var product = {
         "id": obj.id,
         "name": obj.name,
         "price": obj.price,
         "quantity": quantity
-      })
+      }
+      var response = await basket_service.sendProduct(this.identification, product)
+      this.basket.push(response)
     },
     updateBasket(product) {
       var obj = this.findBasketProduct(product.id)
@@ -86,9 +100,10 @@ export default {
           obj.quantity = product.quantity
         }
         if (obj.quantity == 0) {
-          this.removeBasketProduct(obj.id)
+          this.removeBasketProduct(obj)
+        } else {
+          this.updateBasketProduct(obj)
         }
-        this.updateBasketProduct(obj)
       }
     }
   }
@@ -97,7 +112,7 @@ export default {
 
 <template>
 <div id="home">
-  <q-nav-bar :basket="this.basket" :quantity="this.basketQuantity" @update-basket="updateBasket"/>
+  <q-nav-bar :basket="this.basket" :quantity="this.basketQuantity" :user=identification @update-basket="updateBasket"/>
   <div class="cards">
     <div v-for="product in products" :key=product.id class="card">
       <q-card :product="product" @update-basket="updateBasket"/>
