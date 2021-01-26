@@ -29,6 +29,9 @@ On the home screen the user will have access to an upper bar that has a fake log
 When the customer finishes choosing products, by hovering the mouse over the cart, he / she will be able to see the summary of what he / she has bought, being able to add or remove items. Below the items, an order confirmation button will be displayed that will take the customer to the checkout screen. When you click on the checkout button, your totalizers will be displayed. At the bottom of the summary, two buttons will be found, which give the option to finalize the order or continue shopping.
 
 ## Questions:
+### How long did you spend on the test?
+40 hours
+
 ### What would you add if you had more time?
 I would add a security protocol for the communication, I started to start with a basic communication protocol, however depending on the browser, the login and password of the basic authentication are required during use. The ideal would be to use a token-based authentication or implement a real login, but that would require time that I don't have. It would also add the front to a Docker. I gotta do it but I had problems with communication because it is http. I could implement something that could do the communication but as during the week my time is limited to developing the night I would not have enough time to finish.
 
