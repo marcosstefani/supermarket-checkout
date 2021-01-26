@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/basket")
@@ -24,6 +26,16 @@ public class BasketController {
 
     public BasketController(BasketService service) {
         this.service = service;
+    }
+
+    @GetMapping("/closed")
+    public ResponseEntity<?> closed(@RequestParam String user) {
+        try {
+            return new ResponseEntity<>(service.history(user), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/product")

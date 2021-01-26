@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -143,5 +145,39 @@ class BasketServiceTest {
         assertThrows(RuntimeException.class, () -> {
             service.conclude(1);
         });
+    }
+
+    @Test
+    void shouldReturnTheDataCompiledWithValuesOfTheTimeThatWereSavedWhenYouConsultTheHistory() {
+        Basket concluded = basketMock;
+        concluded.setCheckoutAt(LocalDateTime.now());
+        concluded.setClosed(true);
+
+        BasketProduct productConcluded = basketProductMock;
+        productConcluded.setName("Amazing Pizza!");
+        productConcluded.setPrice(BigDecimal.valueOf(54.95));
+        productConcluded.setDiscount(BigDecimal.valueOf(7.98));
+        productConcluded.setTotal(BigDecimal.valueOf(46.97));
+
+        doReturn(userMock).when(userService).find("Jan");
+        doReturn(Collections.singletonList(concluded)).when(basketRepository).findByUserAndClosed(any(User.class), anyBoolean());
+        doReturn(Collections.singletonList(productConcluded)).when(productRepository).findByBasket(any(Basket.class));
+
+        List<CheckoutDto> history = service.history("Jan");
+        assertEquals(history.size(), 1);
+        CheckoutDto checkout = history.get(0);
+        assertEquals(checkout.getOrderNumber(), concluded.getId());
+        assertEquals(checkout.getPrice(), productConcluded.getPrice());
+        assertEquals(checkout.getDiscount(), productConcluded.getDiscount());
+        assertEquals(checkout.getTotal(), productConcluded.getTotal());
+        assertEquals(checkout.getCheckoutAt(), concluded.getCheckoutAt());
+        assertEquals(checkout.getProducts().size(), 1);
+        ProductDto product = checkout.getProducts().get(0);
+        assertEquals(product.getId(), productConcluded.getProduct());
+        assertEquals(product.getName(), productConcluded.getName());
+        assertEquals(product.getQuantity(), productConcluded.getQuantity());
+        assertEquals(product.getPrice(), productConcluded.getPrice());
+        assertEquals(product.getDiscount(), productConcluded.getDiscount());
+        assertEquals(product.getTotal(), productConcluded.getTotal());
     }
 }

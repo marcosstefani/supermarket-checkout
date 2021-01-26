@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 @Entity
 @Table
@@ -27,7 +28,11 @@ public class BasketProduct {
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
     private String product;
+    private String name;
     private Integer quantity;
+    private BigDecimal price;
+    private BigDecimal discount;
+    private BigDecimal total;
 
     public BasketProduct(Basket basket, String product, Integer quantity) {
         this.basket = basket;

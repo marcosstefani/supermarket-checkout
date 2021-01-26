@@ -5,11 +5,14 @@ import com.qikserve.supermarket.domain.BasketProduct;
 import com.qikserve.supermarket.domain.User;
 import com.qikserve.supermarket.domain.dto.CheckoutDto;
 import com.qikserve.supermarket.domain.dto.ProductDto;
+import com.qikserve.supermarket.exception.BasketNotFoundException;
+import com.qikserve.supermarket.exception.UserNotFoundException;
 import com.qikserve.supermarket.repository.BasketProductRepository;
 import com.qikserve.supermarket.repository.BasketRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,13 +39,13 @@ public class BasketService {
     public CheckoutDto checkout(String username) {
         User user = findUser(username);
         List<Basket> baskets = repository.findByUserAndClosed(user, false);
-        if (baskets.isEmpty()) throw new RuntimeException("Basket not found!");
+        if (baskets.isEmpty()) throw new BasketNotFoundException("Basket not found to user ".concat(username));
         return loadCheckout(baskets.get(0));
     }
 
     public Basket conclude(Integer id) {
         Optional<Basket> basketOptional = repository.findById(id);
-        if (basketOptional.isEmpty()) throw new RuntimeException("Basket not found!");
+        if (basketOptional.isEmpty()) throw new BasketNotFoundException("Basket not found with id ".concat(id.toString()));
 
         Basket basket = basketOptional.get();
         basket.setCheckoutAt(LocalDateTime.now());
@@ -50,14 +53,40 @@ public class BasketService {
         return repository.save(basket);
     }
 
+    public List<CheckoutDto> history(String username) {
+        List<CheckoutDto> result = new ArrayList<>();
+        User user = findUser(username);
+        final List<Basket> baskets = repository.findByUserAndClosed(user, true);
+        for (Basket basket : baskets) {
+            CheckoutDto dto = new CheckoutDto(basket.getId());
+            dto.setCheckoutAt(basket.getCheckoutAt());
+            final List<BasketProduct> products = productRepository.findByBasket(basket);
+            for (BasketProduct product : products) {
+                if (product.getQuantity() > 0) {
+                    dto.addProduct(new ProductDto(
+                        product.getProduct(),
+                        product.getName(),
+                        product.getQuantity(),
+                        product.getPrice(),
+                        product.getDiscount(),
+                        product.getTotal()));
+                }
+            }
+            result.add(dto);
+        }
+        return result;
+    }
+
     private CheckoutDto loadCheckout(Basket basket) {
         CheckoutDto result = new CheckoutDto(basket.getId());
         List<BasketProduct> basketProducts = productRepository.findByBasket(basket);
         if (basketProducts.isEmpty()) {
-            throw new RuntimeException("Basket not found!");
+            throw new BasketNotFoundException("Basket not found with id ".concat(basket.getId().toString()));
         }
         for (BasketProduct basketProduct: basketProducts) {
-            result.addProduct(productService.getOne(basketProduct.getProduct(), basketProduct.getQuantity()));
+            final ProductDto productDto = productService.getOne(basketProduct.getProduct(), basketProduct.getQuantity());
+            saveBasketProduct(basketProduct, productDto);
+            result.addProduct(productDto);
         }
         return result;
     }
@@ -71,7 +100,7 @@ public class BasketService {
 
     private User findUser(String username) {
         User user = userService.find(username);
-        if (user == null) throw new RuntimeException("User not found!");
+        if (user == null) throw new UserNotFoundException("User not found with username " + username);
         return user;
     }
 
@@ -82,13 +111,23 @@ public class BasketService {
 
     private ProductDto update(Integer quantity, BasketProduct product) {
         product.setQuantity(quantity);
-        productRepository.save(product);
-        return productService.getOne(product.getProduct(), product.getQuantity());
+        final ProductDto productDto = productService.getOne(product.getProduct(), product.getQuantity());
+        saveBasketProduct(product, productDto);
+        return productDto;
     }
 
     private ProductDto create(Basket basket, String productId, Integer quantity) {
         BasketProduct product = new BasketProduct(basket, productId, quantity);
+        final ProductDto productDto = productService.getOne(product.getProduct(), product.getQuantity());
+        saveBasketProduct(product, productDto);
+        return productDto;
+    }
+
+    private void saveBasketProduct(BasketProduct product, ProductDto productDto) {
+        product.setName(productDto.getName());
+        product.setPrice(productDto.getPrice());
+        product.setDiscount(productDto.getDiscount());
+        product.setTotal(productDto.getTotal());
         productRepository.save(product);
-        return productService.getOne(product.getProduct(), product.getQuantity());
     }
 }

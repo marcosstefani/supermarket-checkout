@@ -24,7 +24,11 @@ CREATE TABLE IF NOT EXISTS basket_product (
 	id serial NOT NULL,
 	basket_id INTEGER NULL,
 	product varchar(255) NULL,
+	name varchar(255) NULL,
 	quantity int4 NULL,
+    price NUMERIC(7,2),
+    discount NUMERIC(7,2),
+    total NUMERIC(7,2),
 	CONSTRAINT basket_product_pkey PRIMARY KEY (id),
     CONSTRAINT basket_product_basket_fkey
           FOREIGN KEY(basket_id)

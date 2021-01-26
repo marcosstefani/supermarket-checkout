@@ -24,10 +24,18 @@ export default {
       });
     },
     checkout() {
-      console.log(this.user);
       var identification = this.user
       this.$router.push({
         path: "/checkout",
+        query: {
+          identification,
+        },
+      });
+    },
+    history() {
+      var identification = this.user
+      this.$router.push({
+        path: "/history",
         query: {
           identification,
         },
@@ -88,7 +96,7 @@ export default {
         <div class="popover-container">
           <ul class="menu">
             <li class="menu-item">
-              <a href="">Closed Orders</a>
+              <a @click.prevent="history()" href="">Closed Orders</a>
               <a @click.prevent="logout()" class="text-error">Logout</a>
             </li>
           </ul>
@@ -108,6 +116,9 @@ export default {
     
     .menu-user
       padding: .25rem 1rem
+
+      .popover-container
+        width: 196px
 
   .navbar .panel
     background-color: white !important

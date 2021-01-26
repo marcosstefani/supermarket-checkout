@@ -33,5 +33,16 @@ export default {
         }
       })
     return data
+  },
+  async history(username) {
+    const {
+      data
+    } = await api
+      .get(`/basket/closed?user=${username}`, {}, {
+        headers: {
+          'Authorization': 'Basic YWRtaW46YWRtaW4='
+        }
+      })
+    return data
   }
 }
